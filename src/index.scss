@@ -1,0 +1,80 @@
+// Global font family
+$fontMali: "Mali", sans-serif;
+
+// Responsive breakpoints
+$screen: 1536px;
+$desktop: 1200px;
+$middle: 992px;
+$tablet: 768px;
+$phone: 576px;
+
+// Global font sizes
+$small: 0.75rem; // 12px
+$normal: 0.875rem; // 14px
+$middle: 1rem; // 16px
+$large: 1.125rem; // 18px
+$moderate: 1.25rem; // 20px
+$size24: 1.5rem; // 24px
+$size28: 1.75rem; // 28px
+$size32: 2rem; // 32px
+$size40: 2.5rem; // 40px
+$size48: 3rem; // 48px
+$size64: 4rem; // 64px
+
+$pxsmall: 12px;
+$pxnormal: 14px;
+$pxmiddle: 16px;
+$pxlarge: 18px;
+$pxmoderate: 20px;
+$pxsize24: 24px;
+$pxsize28: 28px;
+$pxsize32: 32px;
+$pxsize40: 40px;
+$pxsize48: 48px;
+$pxsize64: 64px;
+
+// Global font weights
+$light: 300;
+$regular: 400;
+$medium: 500;
+$semibold: 600;
+$bold: 700;
+
+// Global variables
+$navbar: 80px;
+$sidebar: 400px;
+
+// Global common styles
+$cardShadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+// Mixing styles
+@mixin flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute($params: ()) {
+  position: absolute;
+
+  @if map-has-key($params, top) {
+    top: map-get($params, top);
+  }
+  @if map-has-key($params, right) {
+    right: map-get($params, right);
+  }
+  @if map-has-key($params, bottom) {
+    bottom: map-get($params, bottom);
+  }
+  @if map-has-key($params, left) {
+    left: map-get($params, left);
+  }
+}

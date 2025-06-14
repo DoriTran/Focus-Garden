@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { Outlet } from "components";
+import { Garden, Grow } from "pages";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Outlet />}>
+          <Route index element={<Navigate to="/garden" replace />} />
+          <Route path="/garden" element={<Garden />} />
+          <Route path="/grow" element={<Grow />} />
+          <Route path="*" element={<Navigate to="/garden" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
