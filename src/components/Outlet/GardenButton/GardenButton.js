@@ -13,14 +13,19 @@ const GardenButton = () => {
   const handleClick = useCallback(() => navigate(isGarden ? "/grow" : "/garden"), [isGarden]);
 
   const [frontIcon, setFrontIcon] = useState(location.pathname === "/shop" ? faBagShopping : faSeedling);
+  const [frontColor, setFrontColor] = useState(location.pathname === "/shop" ? "grow" : "shop");
   useEffect(() => {
     let handler = null;
 
     if (location.pathname !== "/shop") {
       handler = setTimeout(() => {
         setFrontIcon(faSeedling);
+        setFrontColor("grow");
       }, 600);
-    } else setFrontIcon(faBagShopping);
+    } else {
+      setFrontIcon(faBagShopping);
+      setFrontColor("shop");
+    }
 
     return () => clearTimeout(handler);
   }, [location.pathname]);
@@ -28,11 +33,11 @@ const GardenButton = () => {
   return (
     <div className={clsx(styles.wrapper, { [styles.flipped]: isGarden })} onClick={handleClick}>
       <div className={styles.inner}>
-        <div className={clsx(styles.face, styles.front)}>
-          <ApIcon icon={frontIcon} />
+        <div className={clsx(styles.face, styles.front)} style={{ border: `8px solid var(--${frontColor})` }}>
+          <ApIcon icon={frontIcon} color={`var(--${frontColor})`} size={28} />
         </div>
         <div className={clsx(styles.face, styles.back)}>
-          <ApIcon icon={faTree} />
+          <ApIcon icon={faTree} color="var(--garden)" size={28} />
         </div>
       </div>
     </div>
