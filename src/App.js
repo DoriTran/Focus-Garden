@@ -7,7 +7,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Outlet />}>
-          <Route index element={<Navigate to="/garden" replace />} />
+          <Route index element={<Navigate to="/garden" />} />
           <Route path="/garden" element={<Garden />} />
           <Route path="/grow" element={<Grow />} />
           <Route path="*" element={<Navigate to="/garden" replace />} />

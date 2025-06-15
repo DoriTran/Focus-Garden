@@ -18,7 +18,7 @@ const SproutTree = ({ stage = "sprout", level = 1, variant = 1 }) => {
   return (
     <div className={styles.wrapper} style={{ ...size }}>
       <div
-        style={{ backgroundImage: `url(/${stage}/${stage === "sprout" ? level : variant}.png)` }}
+        style={{ backgroundImage: `url(/sprites/${stage}/${stage === "sprout" ? level : variant}.png)` }}
         className={styles.sproutTree}
       />
     </div>
