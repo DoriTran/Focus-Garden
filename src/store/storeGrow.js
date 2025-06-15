@@ -53,6 +53,9 @@ const useStoreGrow = create(
             };
           }
 
+          // Handle max level tree upto 15 levels
+          if (stage === "tree" && level === 15) return { ...state, level: 15 };
+
           // Handle grow up level case (both sprout and tree) - Only sprout change variant on level up
           return {
             ...state,
