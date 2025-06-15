@@ -8,7 +8,9 @@ const Outlet = () => {
     <main className={styles.main}>
       <GardenButton />
       <DomLibOutlet />
-      <button onClick={() => navigate("/grow")}>ABC</button>
+      <button onClick={() => navigate("/shop")} style={{ marginTop: 100 }}>
+        Shop
+      </button>
     </main>
   );
 };

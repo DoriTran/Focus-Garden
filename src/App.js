@@ -1,5 +1,5 @@
 import { Outlet } from "components";
-import { Garden, Grow } from "pages";
+import { Garden, Grow, Shop } from "pages";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -10,6 +10,7 @@ const App = () => {
           <Route index element={<Navigate to="/garden" />} />
           <Route path="/garden" element={<Garden />} />
           <Route path="/grow" element={<Grow />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="*" element={<Navigate to="/garden" replace />} />
         </Route>
       </Routes>
