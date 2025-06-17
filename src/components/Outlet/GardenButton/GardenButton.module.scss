@@ -1,13 +1,13 @@
 .wrapper {
-  width: 70px;
-  height: 70px;
+  width: var(--app-round-btn-size);
+  height: var(--app-round-btn-size);
   perspective: 2000px;
   cursor: pointer;
 
   position: fixed;
   z-index: 10;
-  top: 25px;
-  left: 25px;
+  top: var(--abs-position);
+  left: var(--abs-position);
 }
 
 .inner {

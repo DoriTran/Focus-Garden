@@ -22,4 +22,14 @@ body {
   --grow: #508d4e;
   --garden: #673147;
   --shop: #D99A00;
+
+  /* Outlet & Global layout */
+  --app-round-btn-size: 70px;
+  --abs-position: 25px;
+
+  /* Grow pages constant */
+  --dirt-height: 200px;
+  --grass-height: 120px;
+  --timer-position: 50px;
+  --starter-position: 170px;
 }

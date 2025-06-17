@@ -32,13 +32,21 @@ const useStoreGrow = create(
     (set) => ({
       ...initialState,
 
+      // Plant actions
       growNewPlant: () =>
         set((state) => ({ ...state, ...newPlantState, variant: randomInRange(1, maxSproutVariantbyLevels[0]) })),
       choosePlant: (payload) => set((state) => ({ ...state, ...payload })),
-      resetPlant: () => set(() => initialState),
+      sellCrop: () => set(() => initialState),
+      resetCrop: () => set(() => initialState),
+
+      // Growing actions
+      tickTime: () => set((state) => ({ ...state, time: state.time + 1 })),
+      updateTime: (time) => set((state) => ({ ...state, time })),
       growUp: () =>
         set((state) => {
           const { stage, level } = state;
+          // Check if not plant is growing
+          if (!stage || !level) return state;
 
           // Handle change sprout to tree case (add rarity, change stage & reset level)
           if (stage === "sprout" && state.level === 9) {

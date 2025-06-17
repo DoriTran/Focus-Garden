@@ -1,10 +1,21 @@
 import { SproutTree } from "components";
+import { useStoreGrow } from "store";
+import { useShallow } from "zustand/react/shallow";
 import styles from "./GrowArea.module.scss";
 
 const GrowArea = () => {
+  const { stage, level, variant, rarity } = useStoreGrow(
+    useShallow((state) => ({
+      stage: state.stage,
+      level: state.level,
+      variant: state.variant,
+      rarity: state.rarity,
+    }))
+  );
+
   return (
     <div className={styles.wrapper}>
-      <SproutTree stage="tree" level={15} rarity={2} variant={9} />
+      <SproutTree stage={stage} level={level} rarity={rarity} variant={variant} />
     </div>
   );
 };
