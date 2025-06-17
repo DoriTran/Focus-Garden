@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useEffect, useMemo, useState } from "react";
 import { ApIcon } from "components";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
@@ -16,20 +17,25 @@ const Timer = () => {
       tickTime: state.tickTime,
     }))
   );
+
+  // Tick logic & state
   const [isPause, setIsPause] = useState(false);
+  const shouldTickTime = useMemo(() => {
+    return time !== null && !isPause;
+  }, [time, isPause]);
 
   useEffect(() => {
+    if (!shouldTickTime) return;
     const interval = setInterval(() => {
       tickTime(time + 1);
       // if (probability(10)) growUp();
     }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    return () => clearInterval(interval);
+  }, [shouldTickTime]);
 
-  const formatedTime = useMemo(() => {
+  // Time formatting
+  const { formatedTime, styleGap } = useMemo(() => {
     const hrs = Math.floor(time / 3600);
     const mins = Math.floor((time % 3600) / 60);
     const secs = time % 60;
@@ -37,7 +43,12 @@ const Timer = () => {
     const paddedMins = mins.toString().padStart(hrs > 0 ? 2 : 1, "0");
     const paddedSecs = secs.toString().padStart(2, "0");
 
-    return hrs > 0 ? `${hrs}:${paddedMins}:${paddedSecs}` : `${paddedMins}:${paddedSecs}`;
+    const final = hrs > 0 ? `${hrs}:${paddedMins}:${paddedSecs}` : `${paddedMins}:${paddedSecs}`;
+    const hrsLength = hrs === 0 ? 0 : Math.floor(Math.log10(hrs)) + 1;
+    return {
+      formatedTime: final,
+      styleGap: hrsLength === 0 ? 50 : Math.max(5, 35 - (hrsLength - 1) * 10),
+    };
   }, [time]);
 
   return (
@@ -51,7 +62,7 @@ const Timer = () => {
         </div>
       )}
       {time !== null && (
-        <div className={clsx(styles.transition, styles.timer)}>
+        <div className={clsx(styles.transition, styles.timer)} style={{ gap: styleGap }}>
           <ApIcon
             icon={isPause ? faPlay : faPause}
             onClick={() => setIsPause(!isPause)}

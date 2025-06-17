@@ -6,8 +6,11 @@ import styles from "./SproutTree.module.scss";
 // level = 1-8
 // variant = number
 
-const SproutTree = ({ stage = "sprout", level = 1, variant = 1, rarity = 0 }) => {
+const SproutTree = ({ stage, level, variant, rarity }) => {
   const styleData = useMemo(() => {
+    // For empty slot
+    if (!stage) return {};
+
     // For sprout stage and variants
     if (stage === "sprout") return sprout[level] || sprout[1];
 
