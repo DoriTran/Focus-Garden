@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ApIcon } from "components";
-import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faLeaf, faPause, faPlay, faSeedling } from "@fortawesome/free-solid-svg-icons";
 import { probability } from "utils";
 import { useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
@@ -18,23 +18,23 @@ const Timer = () => {
     }))
   );
 
-  // Tick logic & state
+  // State & Conditional Logic
   const [isPause, setIsPause] = useState(false);
-  const shouldTickTime = useMemo(() => {
-    return time !== null && !isPause;
-  }, [time, isPause]);
+  const isGrowOn = useMemo(() => time !== null, [time]);
+  const isTimerOn = useMemo(() => time !== null && !isPause, [time, isPause]);
 
+  // Timer Control & Gacha Tree Grow
   useEffect(() => {
-    if (!shouldTickTime) return;
+    if (!isTimerOn) return;
     const interval = setInterval(() => {
       tickTime(time + 1);
       // if (probability(10)) growUp();
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [shouldTickTime]);
+  }, [isTimerOn]);
 
-  // Time formatting
+  // Animations & Actions & Formatting
   const { formatedTime, styleGap } = useMemo(() => {
     const hrs = Math.floor(time / 3600);
     const mins = Math.floor((time % 3600) / 60);
@@ -51,28 +51,35 @@ const Timer = () => {
     };
   }, [time]);
 
+  const iconProps = useMemo(() => {
+    if (isGrowOn)
+      return {
+        icon: isPause ? faPlay : faPause,
+        size: isPause ? 30 : 34,
+        color: "var(--text)",
+        style: { width: 40 },
+        onClick: () => setIsPause(!isPause),
+      };
+    return {
+      icon: faLeaf,
+      size: 30,
+      color: "var(--grow)",
+    };
+  }, [isGrowOn, isPause]);
+
   return (
     <div
       className={styles.container}
       style={{ bottom: time !== null ? "var(--timer-position)" : "var(--starter-position)" }}
     >
-      {time === null && (
-        <div className={clsx(styles.transition, styles.starter)}>
-          <ApIcon icon="handHoldingSeedling" customSVG onClick={() => growNewPlant()} color="var(--grow)" size={75} />
-        </div>
-      )}
-      {time !== null && (
-        <div className={clsx(styles.transition, styles.timer)} style={{ gap: styleGap }}>
-          <ApIcon
-            icon={isPause ? faPlay : faPause}
-            onClick={() => setIsPause(!isPause)}
-            color="var(--text)"
-            size={isPause ? 30 : 34}
-            style={{ width: 40 }}
-          />
-          <div className={styles.text}>{formatedTime}</div>
-        </div>
-      )}
+      <div
+        className={isGrowOn ? styles.timer : styles.starter}
+        {...(!isGrowOn && { onClick: () => growNewPlant() })}
+        {...(isGrowOn && { style: { gap: styleGap } })}
+      >
+        <ApIcon {...iconProps} />
+        <div className={styles.text}>{isGrowOn ? formatedTime : "Grow!"}</div>
+      </div>
     </div>
   );
 };
