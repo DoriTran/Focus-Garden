@@ -1,128 +1,83 @@
+import { getCostForNewSpot, getCurrentUnixTime } from "utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import useStoreShop from "./storeShop";
 
-const initialState = {
-  coin: 0,
-  gem: 0,
-  // Nursery → elements: PlantId
-  nursery: { maxSpot: 1, plants: [] },
-  // Garden → elements: { id: PlantId, spot: SpotType }, { no plant id } (empty), null (not buy yet)
-  garden: [
-    [{ spot: "grass" }, { spot: "grass" }, { spot: "grass" }],
-    [{ spot: "grass" }, { spot: "grass" }, { spot: "grass" }],
-    [{ spot: "grass" }, { spot: "grass" }, { spot: "grass" }],
-  ],
-  // Spot type storage:
-  spots: { grass: { own: 9, used: 9 } },
-};
-
+// gardens, favorites: { sprouts: [], 1: [], 2: [], 3: [], 4: [], 5: [] }
 const useStoreGarden = create(
   persist(
     (set) => ({
-      ...initialState,
+      gardens: { sprouts: [], 1: [], 2: [], 3: [], 4: [], 5: [] },
+      favorites: { sprouts: [], 1: [], 2: [], 3: [], 4: [], 5: [] },
+      usedSpots: 0,
+      maxSpots: 10,
 
-      // Coin & gem management
-      adjustCoin: (amount) => set((state) => ({ ...state, coin: state.coin + amount })),
-      adjustGem: (amount) => set((state) => ({ ...state, gem: state.gem + amount })),
-
-      // Nursery management
-      addNurseryPlant: (plantId) =>
+      // Garden actions
+      addPlant: (plant) =>
         set((state) => {
-          const nursery = { ...state.nursery };
-          if (nursery.plants.length < nursery.maxSpot) {
-            nursery.plants.push(plantId);
-          }
-          return { ...state, nursery };
+          const { gardens, favorites, usedSpot, maxSpots } = state;
+          // Check if there is space in the garden
+          if (usedSpot === maxSpots) return state;
+
+          // If plant is favorite, add it to favorites, otherwise to gardens
+          const { stage, rarity, favorite } = plant;
+          const update = getCurrentUnixTime();
+
+          const target = favorite ? { ...favorites } : { ...gardens };
+          const category = stage === "sprout" ? "sprouts" : rarity;
+          target[category].shift({ ...plant, update });
+          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot + 1 };
         }),
-
-      removeNurseryPlant: (plantId) =>
+      removePlant: (plant) =>
         set((state) => {
-          const nursery = { ...state.nursery };
-          nursery.plants = nursery.plants.filter((nurseryPlantId) => nurseryPlantId !== plantId);
-          return { ...state, nursery };
+          const { gardens, favorites, usedSpot } = state;
+          const { stage, rarity, favorite } = plant;
+
+          // Remove plant from gardens or favorites
+          const target = favorite ? { ...favorites } : { ...gardens };
+          const category = stage === "sprout" ? "sprouts" : rarity;
+          target[category] = target[category].filter((p) => p.id !== plant.id);
+          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot - 1 };
         }),
-
-      buyNurserySpot: () =>
+      toggleFavorite: (plant) =>
         set((state) => {
-          const nursery = { ...state.nursery };
-          nursery.maxSpot += 1;
-          return { ...state, nursery };
+          const { favorites, gardens } = state;
+          const { stage, rarity, favorite } = plant;
+          const category = stage === "sprout" ? "sprouts" : rarity;
+
+          const from = favorite ? { ...favorites } : { ...gardens };
+          const to = favorite ? { ...gardens } : { ...favorites };
+
+          // Remove from current collection
+          from[category] = from[category].filter((p) => p.id !== plant.id);
+
+          // Toggle favorite status and reinsert into other collection
+          const updatedPlant = { ...plant, favorite: !favorite };
+          to[category] = [...to[category], updatedPlant];
+
+          return {
+            ...state,
+            favorites: favorite ? from : to,
+            gardens: favorite ? to : from,
+          };
         }),
-
-      isNurseryFull: () => (state) => state.nursery.plants.length >= state.nursery.maxSpot,
-
-      // Garden spot management
-      updateGardenSpot: (row, col, payload) =>
+      buyGardenSpot: () =>
         set((state) => {
-          const garden = state.garden.map((r) => [...r]);
+          const { coin, gem, addCoin, addGem } = useStoreShop.getState();
+          const { coinst: neededCoin, gem: neededGem } = getCostForNewSpot();
 
-          // Check if payload include spot type change
-          const spots = { ...state.spots };
-          if (payload.spot) {
-            if (garden[row][col].spot) spots[garden[row][col].spot].used -= 1;
-            spots[payload.spot].used += 1;
-          }
-
-          // Update garden spot with other payload properties
-          if (row < garden.length && col < garden[0].length) {
-            garden[row][col] = { ...garden[row][col], ...payload };
-          }
-
-          return { ...state, garden, spots };
-        }),
-
-      buyNewGardenSpot: (row, col) =>
-        set((state) => {
-          const garden = state.garden.map((r) => [...r]);
-
-          // Check if buying spot in new row
-          if (row === garden.length) {
-            const canAddNewRow = garden[garden.length - 1].every((cell) => cell !== null);
-            if (canAddNewRow) garden.push(Array(garden[0].length).fill(null));
-          }
-
-          // Check if buying spot in new column
-          if (col === garden[0].length) {
-            const canAddNewCol = garden.every((r) => r[col - 1] !== null);
-            if (canAddNewCol) garden.forEach((r) => r.push(null));
-          }
-
-          // After checking, recheck out of bound & set the spot to "empty"
-          if (!(row >= garden.length || col >= garden[0].length)) garden[row][col] = {};
-          return { ...state, garden };
-        }),
-
-      buySpotType: (spotType) =>
-        set((state) => {
-          const spots = { ...state.spots };
-          if (!spots[spotType]) spots[spotType] = { own: 0, used: 0 };
-          spots[spotType].own += 1;
-          return { ...state, spots };
-        }),
-
-      // Handy actions
-      moveFromNurseryToGarden: (plantId, row, col) =>
-        set((state) => {
-          // Find the plant in nursery
-          const nursery = { ...state.nursery };
-          const plantIndex = nursery.plants.findIndex((nurseryPlantId) => nurseryPlantId === plantId);
-          if (plantIndex === -1) return state;
-
-          // Check if the garden spot is empty
-          const garden = state.garden.map((r) => [...r]);
-          if (garden[row][col].id) return state;
-
-          // Remove from nursery & Update garden spot
-          nursery.plants.splice(plantIndex, 1);
-          garden[row][col] = { ...garden[row][col], id: nursery.plants[plantIndex] };
-
-          return { ...state, nursery, garden };
+          if (coin < neededCoin || gem < neededGem) return state;
+          addCoin(-neededCoin);
+          addGem(-neededGem);
+          return {
+            ...state,
+            maxSpots: state.maxSpots + 1,
+          };
         }),
     }),
     {
-      name: "garden-storage",
+      name: "Garden",
     }
   )
 );
-
 export default useStoreGarden;

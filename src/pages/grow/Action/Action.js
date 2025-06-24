@@ -13,7 +13,14 @@ const Action = () => {
     useShallow((state) => ({ resetCrop: state.resetCrop, sellCrop: state.sellCrop }))
   );
   const plant = useStoreGrow(
-    useShallow((state) => ({ id: state.id, stage: state.stage, level: state.level, rarity: state.rarity, time: state.time }))
+    useShallow((state) => ({
+      id: state.id,
+      stage: state.stage,
+      level: state.level,
+      rarity: state.rarity,
+      time: state.time,
+      favorite: state.favorite,
+    }))
   );
 
   const moveToGarden = useCallback(() => {
