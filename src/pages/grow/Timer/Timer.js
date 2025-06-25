@@ -28,7 +28,7 @@ const Timer = () => {
     if (!isTimerOn) return;
     const interval = setInterval(() => {
       tickTime(time + 1);
-      // if (probability(10)) growUp();
+      // growUp();
     }, 1000);
 
     return () => clearInterval(interval);

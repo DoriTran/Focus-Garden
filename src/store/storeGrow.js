@@ -33,8 +33,8 @@ export const maxTreeVariantByRarities = [20, 15, 14, 15, 5];
 const posibilityByRarities = [60, 25, 10, 4, 1];
 const posibilityByRaritiesWithClover = [10, 50, 25, 10, 5];
 const gemPosibilityByRarities = [5, 10, 20, 35, 60];
-const growUpChance = 0.05;
-const growUpChanceFertilized = 0.1;
+const growUpChance = 0.125;
+const growUpChanceFertilized = 0.25;
 
 const useStoreGrow = create(
   persist(
@@ -51,7 +51,7 @@ const useStoreGrow = create(
       resetCrop: () => set(() => initialState),
       sellCrop: () =>
         set((state) => {
-          const { stage, level, rarity, variant } = state;
+          const { stage, level, rarity } = state;
           const { addCoin, addGem } = useStoreShop.getState();
 
           if (stage === "sprout") addCoin(level);
@@ -59,7 +59,7 @@ const useStoreGrow = create(
             // Coin gain calculation
             const extraCoinByPercent = [];
             while (extraCoinByPercent.length < 3) {
-              const extra = Math.floor(Math.random() * 99) + 1;
+              const extra = randomInRange(1, 99);
               const percent = 100 - extra;
               if (probability(percent)) extraCoinByPercent.push(extra);
               else break;
