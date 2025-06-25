@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { sprout, tree } from "./preData";
+import { defaultTreePreStyle, sproutPreStyle, treePreStyle } from "./preData";
 import styles from "./SproutTree.module.scss";
 
 // stage = sprout | tree
@@ -12,10 +12,13 @@ const SproutTree = ({ stage, level, variant, rarity }) => {
     if (!stage) return {};
 
     // For sprout stage and variants
-    if (stage === "sprout") return sprout[level] || sprout[1];
+    if (stage === "sprout") return sproutPreStyle[level] || sproutPreStyle[1];
 
     // For tree variants
-    return { width: 500 + 25 * (level - 1), height: 750 + 25 * (level - 1), marginBottom: -180, ...tree[variant] };
+    return {
+      ...defaultTreePreStyle(level),
+      ...(treePreStyle[rarity][variant] && { marginBottom: treePreStyle[rarity][variant] }),
+    };
   }, [stage, level, variant]);
 
   const pathToSprite = useMemo(() => {

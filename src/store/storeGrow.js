@@ -1,4 +1,4 @@
-import { probability, randomInRange, rollRarity } from "utils";
+import { calculateSellReward, probability, randomInRange, rollRarity } from "utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import useStoreShop from "./storeShop";
@@ -32,7 +32,6 @@ export const maxSproutVariantbyLevels = [9, 8, 7, 8, 6, 9, 10, 8];
 export const maxTreeVariantByRarities = [20, 15, 14, 15, 5];
 const posibilityByRarities = [60, 25, 10, 4, 1];
 const posibilityByRaritiesWithClover = [10, 50, 25, 10, 5];
-const gemPosibilityByRarities = [5, 10, 20, 35, 60];
 const growUpChance = 0.125;
 const growUpChanceFertilized = 0.25;
 
@@ -53,28 +52,9 @@ const useStoreGrow = create(
         set((state) => {
           const { stage, level, rarity } = state;
           const { addCoin, addGem } = useStoreShop.getState();
-
-          if (stage === "sprout") addCoin(level);
-          else {
-            // Coin gain calculation
-            const extraCoinByPercent = [];
-            while (extraCoinByPercent.length < 3) {
-              const extra = randomInRange(1, 99);
-              const percent = 100 - extra;
-              if (probability(percent)) extraCoinByPercent.push(extra);
-              else break;
-            }
-            let baseCoin = 10 + level * rarity;
-            extraCoinByPercent.forEach((extra) => {
-              baseCoin += Math.floor((baseCoin * extra) / 100);
-            });
-            addCoin(baseCoin);
-
-            // Gem gain calculation
-            let baseGem = 0;
-            while (probability(gemPosibilityByRarities[rarity - 1])) baseGem += 1;
-            if (baseGem) addGem(baseGem);
-          }
+          const { coin, gem } = calculateSellReward(stage, level, rarity);
+          addCoin(coin);
+          addGem(gem);
           return initialState;
         }),
 

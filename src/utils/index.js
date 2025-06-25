@@ -4,3 +4,4 @@ export { default as rollRarity } from "./rollRarity";
 export { default as getCurrentUnixTime } from "./getCurrentUnixTime";
 export { default as getCostForNewSpot } from "./getCostForNewSpot";
 export { default as getCostForItems } from "./getCostForItems";
+export { default as calculateSellReward } from "./calculateSellReward";

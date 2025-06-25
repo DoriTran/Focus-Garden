@@ -1,14 +1,10 @@
 import { useCallback } from "react";
-import { useStorePlant, useStoreGarden, useStoreGrow } from "store";
+import { useStoreGarden, useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
 import ActBtn from "./ActBtn";
 import styles from "./Action.module.scss";
 
 const Action = () => {
-  const addPlant = useStorePlant((state) => state.addPlant);
-  const { addNurseryPlant, isNurseryFull } = useStoreGarden(
-    useShallow((state) => ({ addNurseryPlant: state.addNurseryPlant, isNurseryFull: state.isNurseryFull }))
-  );
   const { resetCrop, sellCrop } = useStoreGrow(
     useShallow((state) => ({ resetCrop: state.resetCrop, sellCrop: state.sellCrop }))
   );
@@ -22,11 +18,10 @@ const Action = () => {
       favorite: state.favorite,
     }))
   );
+  const addPlant = useStoreGarden((state) => state.addPlant);
 
   const moveToGarden = useCallback(() => {
-    if (isNurseryFull()) return;
     addPlant(plant);
-    addNurseryPlant(plant.id);
     resetCrop();
   }, [plant]);
 

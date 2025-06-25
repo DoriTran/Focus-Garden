@@ -1,4 +1,4 @@
-import { getCostForNewSpot, getCurrentUnixTime } from "utils";
+import { calculateSellReward, getCostForNewSpot, getCurrentUnixTime } from "utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import useStoreShop from "./storeShop";
@@ -55,11 +55,7 @@ const useStoreGarden = create(
           const updatedPlant = { ...plant, favorite: !favorite };
           to[category] = [...to[category], updatedPlant];
 
-          return {
-            ...state,
-            favorites: favorite ? from : to,
-            gardens: favorite ? to : from,
-          };
+          return { ...state, favorites: favorite ? from : to, gardens: favorite ? to : from };
         }),
       buyGardenSpot: () =>
         set((state) => {
@@ -69,10 +65,23 @@ const useStoreGarden = create(
           if (coin < neededCoin || gem < neededGem) return state;
           addCoin(-neededCoin);
           addGem(-neededGem);
-          return {
-            ...state,
-            maxSpots: state.maxSpots + 1,
-          };
+          return { ...state, maxSpots: state.maxSpots + 1 };
+        }),
+      sellPlant: (plant) =>
+        set((state) => {
+          const { gardens, favorites, usedSpot } = state;
+          const { stage, level, rarity, favorite } = plant;
+
+          const { addCoin, addGem } = useStoreShop.getState();
+          const { coin, gem } = calculateSellReward(stage, level, rarity);
+          addCoin(coin);
+          addGem(gem);
+
+          const target = favorite ? { ...favorites } : { ...gardens };
+          const category = stage === "sprout" ? "sprouts" : rarity;
+          target[category] = target[category].filter((p) => p.id !== plant.id);
+
+          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot - 1 };
         }),
     }),
     {
