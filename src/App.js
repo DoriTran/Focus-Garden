@@ -8,7 +8,7 @@ const App = () => {
     <SnackbarProvider
       maxSnack={5}
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      autoHideDuration={60000}
+      autoHideDuration={2500}
       Components={{
         coin: ApSnackbar,
         gem: ApSnackbar,

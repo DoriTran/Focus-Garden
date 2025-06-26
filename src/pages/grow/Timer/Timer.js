@@ -1,12 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ApIcon } from "components";
-import { faLeaf, faPause, faPlay, faSeedling } from "@fortawesome/free-solid-svg-icons";
-import { probability } from "utils";
+import { faLeaf, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
-import clsx from "clsx";
-import { useSnackbar } from "notistack";
 import styles from "./Timer.module.scss";
 
 const Timer = () => {
@@ -68,29 +65,19 @@ const Timer = () => {
     };
   }, [isGrowOn, isPause]);
 
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClick = () => {
-    enqueueSnackbar("You earned 10 coins!", { variant: "coin" });
-    enqueueSnackbar("You got a gem!", { variant: "gem" });
-    enqueueSnackbar("Okay!", { variant: "okay" });
-    enqueueSnackbar("Fail!", { variant: "fail" });
-    enqueueSnackbar("You got a gem!", { variant: "info" });
-  };
-
   return (
     <div
       className={styles.container}
       style={{ bottom: time !== null ? "var(--timer-position)" : "var(--starter-position)" }}
     >
-      <button onClick={handleClick}>Test Snackbar</button>
-      {/* <div
+      <div
         className={isGrowOn ? styles.timer : styles.starter}
         {...(!isGrowOn && { onClick: () => growNewPlant() })}
         {...(isGrowOn && { style: { gap: styleGap } })}
       >
         <ApIcon {...iconProps} />
         <div className={styles.text}>{isGrowOn ? formatedTime : "Grow!"}</div>
-      </div> */}
+      </div>
     </div>
   );
 };
