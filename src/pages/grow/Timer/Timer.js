@@ -26,7 +26,7 @@ const Timer = () => {
     if (!isTimerOn) return;
     const interval = setInterval(() => {
       tickTime(time + 1);
-      // growUp();
+      growUp();
     }, 1000);
 
     return () => clearInterval(interval);
@@ -45,7 +45,7 @@ const Timer = () => {
     const hrsLength = hrs === 0 ? 0 : Math.floor(Math.log10(hrs)) + 1;
     return {
       formatedTime: final,
-      styleGap: hrsLength === 0 ? 50 : Math.max(5, 35 - (hrsLength - 1) * 10),
+      styleGap: hrsLength === 0 ? 46 : Math.max(5, 35 - (hrsLength - 1) * 10),
     };
   }, [time]);
 

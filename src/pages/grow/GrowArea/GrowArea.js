@@ -15,7 +15,8 @@ const GrowArea = () => {
 
   return (
     <div className={styles.wrapper}>
-      <SproutTree stage={stage} level={level} rarity={rarity} variant={variant} />
+      {/* <SproutTree stage={stage} level={level} rarity={rarity} variant={variant} /> */}
+      <SproutTree stage="sprout" level={9} rarity={1} variant={8} />
     </div>
   );
 };

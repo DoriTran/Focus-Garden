@@ -22,6 +22,10 @@ function calculateSellReward(stage, level, rarity) {
   // Gem gain calculation
   let baseGem = 0;
   while (probability(gemPosibilityByRarities[rarity - 1])) baseGem += 1;
+  if (probability(Math.min(level), rarity * 10)) {
+    baseGem *= 2;
+    if (baseGem === 0) baseGem = rarity;
+  }
 
   return { coin: baseCoin, gem: baseGem };
 }

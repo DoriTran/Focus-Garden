@@ -7,6 +7,7 @@ export const sproutPreStyle = {
   6: { width: 290, height: 435, marginBottom: -95 },
   7: { width: 350, height: 525, marginBottom: -110 },
   8: { width: 420, height: 630, marginBottom: -150 },
+  9: { width: 500, height: 750, marginBottom: -180 },
 };
 
 export const treePreStyle = {
@@ -18,7 +19,7 @@ export const treePreStyle = {
 };
 
 export const defaultTreePreStyle = (level) => ({
-  width: 500 + 25 * (level - 1),
-  height: 750 + 25 * (level - 1),
-  marginBottom: -180,
+  width: 600 + 30 * (level - 1),
+  height: (600 + 30 * (level - 1)) * 1.5,
+  marginBottom: -210,
 });

@@ -24,6 +24,9 @@ const NavigationBtn = () => {
   const [isFlipping, setIsFlipping] = useState(false);
 
   useEffect(() => {
+    // Load the page not in pre routes
+    if (!navKeys.includes(nextLoc)) return;
+
     // First time load page
     if (front.icon === null) {
       setFront({ icon: icons[nextLoc], color: colors[nextLoc] });
@@ -35,6 +38,12 @@ const NavigationBtn = () => {
     setBack({ icon: icons[nextLoc], color: colors[nextLoc] });
     navigate(`/${nextLoc}`);
   }, [nextLoc]);
+
+  useEffect(() => {
+    if (!navKeys.includes(nextLoc)) {
+      setNextLoc(location.pathname.split("/")[1]);
+    }
+  }, [nextLoc, location]);
 
   useEffect(() => {
     if (back.icon === null) return;
