@@ -20,15 +20,13 @@ const NavigationBtn = () => {
   const [back, setBack] = useState({ icon: null, color: "" });
 
   // Flip state
-  const [nextLoc, setNextLoc] = useState(location.pathname);
+  const [nextLoc, setNextLoc] = useState(location.pathname.split("/")[1]);
   const [isFlipping, setIsFlipping] = useState(false);
 
   useEffect(() => {
     // First time load page
     if (front.icon === null) {
-      const loc = location.pathname.split("/")[1];
-      setNextLoc(loc);
-      setFront({ icon: icons[loc], color: colors[loc] });
+      setFront({ icon: icons[nextLoc], color: colors[nextLoc] });
       return;
     }
 
@@ -36,7 +34,10 @@ const NavigationBtn = () => {
     setIsFlipping(true);
     setBack({ icon: icons[nextLoc], color: colors[nextLoc] });
     navigate(`/${nextLoc}`);
+  }, [nextLoc]);
 
+  useEffect(() => {
+    if (back.icon === null) return;
     // After flipping - reverse faces
     const timer = setTimeout(() => {
       setFront(back);
@@ -44,7 +45,7 @@ const NavigationBtn = () => {
     }, 600);
 
     return () => clearTimeout(timer);
-  }, [nextLoc]);
+  }, [back]);
 
   // Open navigation
   const [isOpen, setIsOpen] = useState(false);
@@ -86,6 +87,7 @@ const NavigationBtn = () => {
           <ApIcon icon={back.icon || faSeedling} color={back.color} size={28} />
         </div>
       </div>
+      <div className={styles.hidder} />
       {navKeys.map((nav) => (
         <div
           key={nav}

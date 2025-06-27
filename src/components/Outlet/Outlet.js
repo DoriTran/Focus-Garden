@@ -1,10 +1,8 @@
-import { Outlet as DomLibOutlet, useNavigate } from "react-router-dom";
-import GardenButton from "./GardenButton/GardenButton";
+import { Outlet as DomLibOutlet } from "react-router-dom";
 import NavigationBtn from "./NavigateBtn/NavigationBtn";
 import styles from "./Outlet.module.scss";
 
 const Outlet = () => {
-  const navigate = useNavigate();
   return (
     <main className={styles.main}>
       <NavigationBtn />

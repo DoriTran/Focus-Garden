@@ -1,6 +1,6 @@
 import { Outlet, ApSnackbar } from "components";
 import { SnackbarProvider } from "notistack";
-import { Garden, Grow, Shop } from "pages";
+import { Album, Garden, Grow, Shop } from "pages";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -24,6 +24,7 @@ const App = () => {
             <Route path="/garden" element={<Garden />} />
             <Route path="/grow" element={<Grow />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/album" element={<Album />} />
             <Route path="*" element={<Navigate to="/grow" replace />} />
           </Route>
         </Routes>
