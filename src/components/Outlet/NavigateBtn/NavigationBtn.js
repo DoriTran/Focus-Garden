@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import ApIcon from "components/ApIcon/ApIcon";
 import { faBagShopping, faBookBookmark, faSeedling, faTree } from "@fortawesome/free-solid-svg-icons";
@@ -47,7 +47,7 @@ const NavigationBtn = () => {
     return () => clearTimeout(timer);
   }, [back]);
 
-  // Open navigation
+  // Open - Close navigation
   const [isOpen, setIsOpen] = useState(false);
   const smallNavPosition = useMemo(() => {
     // Unopen case
@@ -77,8 +77,24 @@ const NavigationBtn = () => {
     );
   }, [isOpen, nextLoc]);
 
+  const navRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className={clsx(styles.container, { [styles.flipped]: isFlipping })} onClick={() => setIsOpen(!isOpen)}>
+    <div
+      ref={navRef}
+      className={clsx(styles.container, { [styles.flipped]: isFlipping })}
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <div className={styles.inner}>
         <div className={clsx(styles.face, styles.front)} style={{ borderColor: front.color }}>
           <ApIcon icon={front.icon || faSeedling} color={front.color} size={28} />

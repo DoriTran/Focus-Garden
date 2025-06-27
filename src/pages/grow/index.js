@@ -5,6 +5,7 @@ import GrowArea from "./GrowArea/GrowArea";
 import Timer from "./Timer/Timer";
 import styles from "./index.module.scss";
 import Action from "./Action/Action";
+import Items from "./Items/Items";
 
 const GrowPage = () => {
   const scrollRef = useRef(null);
@@ -24,6 +25,7 @@ const GrowPage = () => {
         <Ground />
         <Timer />
         <Action />
+        <Items />
       </div>
     </ApScrollbar>
   );

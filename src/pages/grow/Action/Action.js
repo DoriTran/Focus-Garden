@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { useStoreGarden, useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
+import { faHeart, faHeartCrack } from "@fortawesome/free-solid-svg-icons";
 import ActBtn from "./ActBtn";
 import styles from "./Action.module.scss";
 
 const Action = () => {
-  const { resetCrop, sellCrop } = useStoreGrow(
-    useShallow((state) => ({ resetCrop: state.resetCrop, sellCrop: state.sellCrop }))
+  const { resetCrop, sellCrop, toggleFavorite } = useStoreGrow(
+    useShallow((state) => ({ resetCrop: state.resetCrop, sellCrop: state.sellCrop, toggleFavorite: state.toggleFavorite }))
   );
   const plant = useStoreGrow(
     useShallow((state) => ({
@@ -29,10 +30,20 @@ const Action = () => {
     sellCrop();
   }, []);
 
+  const changeFavorite = useCallback(() => {
+    toggleFavorite();
+  }, []);
+
   return (
     <div className={styles.wrapper}>
-      <ActBtn icon="shovel" customSVG color="var(--garden)" onClick={moveToGarden} />
-      <ActBtn icon="axe" customSVG color="var(--shop)" onClick={sellTheCrop} />
+      <ActBtn
+        icon={plant.favorite ? faHeart : faHeartCrack}
+        color={plant.favorite ? "var(--favorite)" : "var(--unfavorite)"}
+        onClick={changeFavorite}
+        isActive={plant.stage}
+      />
+      <ActBtn icon="shovel" customSVG color="var(--garden)" onClick={moveToGarden} isActive={plant.stage} />
+      <ActBtn icon="axe" customSVG color="var(--shop)" onClick={sellTheCrop} isActive={plant.stage === "tree"} />
     </div>
   );
 };

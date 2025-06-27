@@ -14,7 +14,7 @@
     width: 100px;
     height: 100px;
     border-radius: 30%;
-    border: 12px solid var(--grow);
+    border: 12px solid #508d4e;
     background-color: var(--text-background);
 
     display: flex;
@@ -24,7 +24,7 @@
 
     .text {
       font-size: 20px;
-      color: var(--grow);
+      color: #508d4e;
       font-weight: 600;
     }
   }

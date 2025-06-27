@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useEffect, useMemo, useState } from "react";
 import { ApIcon } from "components";
-import { faLeaf, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faLeaf, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Timer.module.scss";

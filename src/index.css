@@ -19,10 +19,13 @@ body {
   --primary: #945405;
   --text: #97621c;
 
-  --grow: #508d4e;
-  --garden: #673147;
-  --shop: #D99A00;
-  --album: #A0B2D8;
+  --grow: #4f9e63;
+  --garden: #d28f6d;
+  --shop: #eba826;
+  --album: #8da5d1;
+
+  --favorite: #d76a85;
+  --unfavorite: #9b7b7b;
 
   /* Outlet & Global layout */
   --app-round-btn-size: 70px;

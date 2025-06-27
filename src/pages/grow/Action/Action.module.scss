@@ -9,15 +9,23 @@
   gap: 20px;
 
   .btnWrapper {
-    width: var(--app-round-btn-size);
-    height: var(--app-round-btn-size);
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 32px;
     background: var(--text-background);
-    border-radius: 50%;
+    border-radius: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .btnUnactive {
+    width: 0;
+    height: 0;
+    border: none !important;
   }
 }
