@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    .favorite {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--favorite-bg);
+    }
+
+    .rarity {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--favorite-bg);
+    }
+
+    .level {
+      width: 50px;
+      height: 30px;
+      border-radius: 10px;
+      background-color: var(--background);
+    }
+  }
+
+  .time {
+    background-color: aliceblue;
+  }
+}

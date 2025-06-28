@@ -15,6 +15,7 @@ const Action = () => {
       stage: state.stage,
       level: state.level,
       rarity: state.rarity,
+      variant: state.variant,
       time: state.time,
       favorite: state.favorite,
     }))

@@ -11,13 +11,15 @@ const useStoreGarden = create(
       favorites: { sprouts: [], 1: [], 2: [], 3: [], 4: [], 5: [] },
       usedSpots: 0,
       maxSpots: 10,
+      filter: {},
+      useGraftingShear: false,
 
       // Garden actions
       addPlant: (plant) =>
         set((state) => {
-          const { gardens, favorites, usedSpot, maxSpots } = state;
+          const { gardens, favorites, usedSpots, maxSpots } = state;
           // Check if there is space in the garden
-          if (usedSpot === maxSpots) return state;
+          if (usedSpots === maxSpots) return state;
 
           // If plant is favorite, add it to favorites, otherwise to gardens
           const { stage, rarity, favorite } = plant;
@@ -25,19 +27,19 @@ const useStoreGarden = create(
 
           const target = favorite ? { ...favorites } : { ...gardens };
           const category = stage === "sprout" ? "sprouts" : rarity;
-          target[category].shift({ ...plant, update });
-          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot + 1 };
+          target[category].unshift({ ...plant, update });
+          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpots: usedSpots + 1 };
         }),
       removePlant: (plant) =>
         set((state) => {
-          const { gardens, favorites, usedSpot } = state;
+          const { gardens, favorites, usedSpots } = state;
           const { stage, rarity, favorite } = plant;
 
           // Remove plant from gardens or favorites
           const target = favorite ? { ...favorites } : { ...gardens };
           const category = stage === "sprout" ? "sprouts" : rarity;
           target[category] = target[category].filter((p) => p.id !== plant.id);
-          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot - 1 };
+          return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpots: usedSpots - 1 };
         }),
       toggleFavorite: (plant) =>
         set((state) => {
@@ -83,6 +85,16 @@ const useStoreGarden = create(
 
           return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot - 1 };
         }),
+      toggleFilter: (filter) =>
+        set((state) => ({
+          ...state,
+          filter: {
+            ...state.filter,
+            [filter]: !state.filter?.[filter],
+          },
+        })),
+      resetFilter: () => set((state) => ({ ...state, filter: {} })),
+      toggleGraftingShear: () => set((state) => ({ ...state, useGraftingShear: !state.useGraftingShear })),
     }),
     {
       name: "Garden",

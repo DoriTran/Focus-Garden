@@ -1,0 +1,80 @@
+$size: 50px;
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  user-select: none;
+
+  .filterBtn {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .favorite {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    outline: 0px solid var(--favorite);
+  }
+
+  .favoriteSelected {
+    outline: 4px solid var(--favorite-bg);
+  }
+
+  .oval {
+    width: fit-content;
+    height: $size;
+    border-radius: 10px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+
+    font-size: 28px;
+    color: var(--text);
+    display: flex;
+    gap: 5px;
+
+    cursor: pointer;
+  }
+
+  .sprout {
+    outline: 0px solid var(--sprout);
+  }
+
+  .sproutSelected {
+    color: white;
+    outline: 4px solid var(--sprout-bg);
+  }
+
+  .tree {
+    outline: 0px solid #16610e;
+  }
+
+  .treeSelected {
+    background-color: var(--tree-bg);
+    outline: 4px solid #537d5d;
+    position: relative;
+    color: white;
+
+    .number {
+      color: #16610e;
+    }
+  }
+}
+
+.number {
+  position: absolute;
+  top: 14px;
+  left: 24px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}

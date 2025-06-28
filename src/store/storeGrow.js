@@ -1,4 +1,4 @@
-import { calculateSellReward, probability, randomInRange, rollRarity } from "utils";
+import { calculateSellReward, getCurrentUnixTime, probability, randomInRange, rollRarity } from "utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import useStoreShop from "./storeShop";
@@ -44,7 +44,12 @@ const useStoreGrow = create(
 
       // Plant actions
       growNewPlant: () =>
-        set((state) => ({ ...state, ...newPlantState, variant: randomInRange(1, maxSproutVariantbyLevels[0]) })),
+        set((state) => ({
+          ...state,
+          ...newPlantState,
+          id: getCurrentUnixTime(),
+          variant: randomInRange(1, maxSproutVariantbyLevels[0]),
+        })),
       choosePlant: (payload) => set((state) => ({ ...state, ...payload })),
       toggleFavorite: () => set((state) => ({ ...state, favorite: !state.favorite })),
       resetCrop: () => set(() => initialState),
@@ -68,10 +73,10 @@ const useStoreGrow = create(
           if (!stage || !level) return state;
 
           // Roll possibility for growing up chance
-          if (!probability(isFertilized ? growUpChanceFertilized : growUpChance)) return state;
+          // if (!probability(isFertilized ? growUpChanceFertilized : growUpChance)) return state;
 
           // Handle change sprout to tree case (add rarity, change stage & reset level)
-          if (stage === "sprout" && state.level === 9) {
+          if (stage === "sprout" && state.level === 1) {
             const treeRarity = rollRarity(isLuckyClover ? posibilityByRaritiesWithClover : posibilityByRarities);
 
             return {
@@ -84,8 +89,8 @@ const useStoreGrow = create(
             };
           }
 
-          // Handle max level tree upto 15 levels
-          if (stage === "tree" && level === 15) return { ...state, level: 15 };
+          // Handle max level tree upto 50 levels
+          if (stage === "tree" && level === 1) return { ...state, level: 1 };
 
           // Handle grow up level case (both sprout and tree) - Only sprout change variant on level up
           return {

@@ -4,6 +4,7 @@ import CustomScrollbar from "./CustomScrollbar";
 // snap: mandatory | proximity
 // smooth: boolean
 // speed: number for scale, px / rem / ... for exact scrolling
+// swap: swap mouse scroll direction
 const ApScrollbar = forwardRef(
   (
     {
@@ -13,6 +14,7 @@ const ApScrollbar = forwardRef(
       snap,
       smooth,
       speed,
+      swap,
       horizontal,
       vertical,
       size = 8,
@@ -27,10 +29,10 @@ const ApScrollbar = forwardRef(
     const scrollbarRef = ref || internalRef;
 
     useEffect(() => {
-      const handleWheel = (event) => {
-        const container = scrollbarRef.current;
-        if (!container || speed === undefined) return;
+      const container = scrollbarRef.current;
+      if (!container || speed === undefined) return;
 
+      const handleWheel = (event) => {
         event.preventDefault();
 
         // Parse speed if it's a fixed unit (e.g., px, rem, em)
@@ -62,17 +64,25 @@ const ApScrollbar = forwardRef(
         }
       };
 
-      const container = scrollbarRef.current;
-      if (container) {
-        container.addEventListener("wheel", handleWheel, { passive: false });
-      }
+      container.addEventListener("wheel", handleWheel, { passive: false });
+      return () => container.removeEventListener("wheel", handleWheel);
+    }, [speed, horizontal, vertical]);
 
-      return () => {
-        if (container) {
-          container.removeEventListener("wheel", handleWheel);
+    useEffect(() => {
+      const container = scrollbarRef.current;
+      if (!container || swap === undefined) return;
+
+      const swapWheel = (event) => {
+        event.preventDefault();
+        if (event.deltaY !== 0) {
+          if (event.shiftKey) container.scrollTop += event.deltaY;
+          else container.scrollLeft += event.deltaY;
         }
       };
-    }, [speed, horizontal, vertical]);
+
+      container.addEventListener("wheel", swapWheel, { passive: false });
+      return () => container.removeEventListener("wheel", swapWheel);
+    }, [swap]);
 
     return (
       <CustomScrollbar

@@ -2,9 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactSVG } from "react-svg";
 import shovel from "./shovel.svg";
 import axe from "./axe.svg";
+import trees from "./trees.svg";
 import handHoldingSeedling from "./hand-holding-seedling.svg";
+import layerPlus from "./layers-plus.svg";
 
-const svgIcon = { shovel, axe, handHoldingSeedling };
+const svgIcon = { shovel, axe, handHoldingSeedling, trees, layerPlus };
 
 const ApIcon = ({ icon, customSVG = false, color = "inherit", size = "1.5rem", fixedWidth = true, sx, ...restProps }) => {
   if (customSVG) {

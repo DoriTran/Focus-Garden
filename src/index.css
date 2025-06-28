@@ -26,14 +26,26 @@ body {
 
   --favorite: #d76a85;
   --unfavorite: #9b7b7b;
+  --favorite-bg: #fde8ee;
 
   /* Outlet & Global layout */
   --app-round-btn-size: 70px;
   --abs-position: 25px;
 
-  /* Grow pages constant */
+  /* Grow page */
   --dirt-height: 200px;
   --grass-height: 120px;
   --timer-position: 50px;
   --starter-position: 180px;
+
+  /* Garden page */
+  --sprout: #D99A00;
+  --sprout-bg: #FFF6D6;
+
+  --tree-bg: #ECFAE5;
+  --tree-r1: #87b185;
+  --tree-r2: #8EBE8A;
+  --tree-r3: #6EBB6E;
+  --tree-r4: #4AA04F;
+  --tree-r5: #248F3D;
 }
