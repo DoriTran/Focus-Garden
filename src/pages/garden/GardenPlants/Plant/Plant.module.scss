@@ -1,36 +1,91 @@
+$size: 50px;
+
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
+  position: relative;
+  z-index: 1;
+  overflow-y: visible;
+  padding-bottom: 15px;
+  user-select: none;
+
+  .plant {
+    padding-bottom: 15px;
+    border-radius: 35px;
+  }
+
+  .plantSelected {
+    background: rgba(240, 248, 255, 0.25);
+  }
 
   .wrapper {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 
     .favorite {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
+      width: $size;
+      height: $size;
+      border-radius: 10px;
       background-color: var(--favorite-bg);
+      border: 4px solid var(--favorite);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .rarity {
-      width: 30px;
-      height: 30px;
+      width: $size;
+      height: $size;
       border-radius: 50%;
-      background-color: var(--favorite-bg);
+      background-color: var(--tree-bg);
+      border: 4px solid var(--tree-hl);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      .num {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc($size - 8px);
+        height: calc($size - 8px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+      }
     }
 
     .level {
-      width: 50px;
-      height: 30px;
+      width: fit-content;
+      height: $size;
       border-radius: 10px;
       background-color: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      color: var(--text);
+      padding: 0 12px;
+      border: 4px solid var(--sprout);
     }
   }
 
   .time {
-    background-color: aliceblue;
+    color: var(--text);
+    padding: 5px 10px;
+    font-size: 25px;
+    border-radius: 15px;
+    border: 4px solid var(--primary);
+    background-color: var(--text-background);
   }
 }

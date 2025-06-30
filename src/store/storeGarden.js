@@ -12,7 +12,6 @@ const useStoreGarden = create(
       usedSpots: 0,
       maxSpots: 10,
       filter: {},
-      useGraftingShear: false,
 
       // Garden actions
       addPlant: (plant) =>
@@ -69,13 +68,15 @@ const useStoreGarden = create(
           addGem(-neededGem);
           return { ...state, maxSpots: state.maxSpots + 1 };
         }),
-      sellPlant: (plant) =>
+      sellPlant: (plant) => {
+        let result;
         set((state) => {
           const { gardens, favorites, usedSpot } = state;
           const { stage, level, rarity, favorite } = plant;
 
           const { addCoin, addGem } = useStoreShop.getState();
-          const { coin, gem } = calculateSellReward(stage, level, rarity);
+          result = calculateSellReward(stage, level, rarity);
+          const { coin, gem } = result;
           addCoin(coin);
           addGem(gem);
 
@@ -84,7 +85,9 @@ const useStoreGarden = create(
           target[category] = target[category].filter((p) => p.id !== plant.id);
 
           return { ...state, [favorite ? "favorites" : "gardens"]: target, usedSpot: usedSpot - 1 };
-        }),
+        });
+        return result;
+      },
       toggleFilter: (filter) =>
         set((state) => ({
           ...state,
@@ -94,7 +97,6 @@ const useStoreGarden = create(
           },
         })),
       resetFilter: () => set((state) => ({ ...state, filter: {} })),
-      toggleGraftingShear: () => set((state) => ({ ...state, useGraftingShear: !state.useGraftingShear })),
     }),
     {
       name: "Garden",

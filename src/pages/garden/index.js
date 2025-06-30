@@ -1,15 +1,21 @@
 import { ApScrollbar } from "components";
-import { useRef } from "react";
-import Background from "./Background/Background";
+import { useEffect, useRef } from "react";
 import Actions from "./Actions/Actions";
 import GardenPlants from "./GardenPlants/GardenPlants";
 
 const Garden = () => {
   const scrollRef = useRef(null);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "auto",
+      });
+    }
+  }, []);
 
   return (
-    <ApScrollbar ref={scrollRef} swap hidden>
-      <Background />
+    <ApScrollbar ref={scrollRef} hidden>
       <Actions />
       <GardenPlants />
     </ApScrollbar>

@@ -49,7 +49,7 @@ const FilterPlant = () => {
       <div
         className={clsx(styles.filterBtn, styles.sprout, styles.oval, { [styles.sproutSelected]: filter.sprout })}
         style={{ backgroundColor: colors.sprout.wrapper }}
-        onClick={() => toggleFilter("sprout")}
+        onClick={() => toggleFilter("sprouts")}
       >
         <ApIcon icon={faSprout} size={25} color={colors.sprout.icon} /> 12
       </div>

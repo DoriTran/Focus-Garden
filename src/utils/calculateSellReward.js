@@ -14,20 +14,28 @@ function calculateSellReward(stage, level, rarity) {
     if (probability(percent)) extraCoinByPercent.push(extra);
     else break;
   }
+  let extraCoins = [];
   let baseCoin = 10 + level * rarity;
-  extraCoinByPercent.forEach((extra) => {
-    baseCoin += Math.floor((baseCoin * extra) / 100);
+  extraCoinByPercent.forEach((ex) => {
+    const extra = Math.floor((baseCoin * ex) / 100);
+    extraCoins.push(`(+${extra})`);
+    baseCoin += extra;
   });
+  extraCoins = extraCoins.join(" ");
 
   // Gem gain calculation
   let baseGem = 0;
+  let extraGems = "";
   while (probability(gemPosibilityByRarities[rarity - 1])) baseGem += 1;
   if (probability(Math.min(level), rarity * 10)) {
     baseGem *= 2;
-    if (baseGem === 0) baseGem = rarity;
+    if (baseGem === 0) {
+      baseGem = rarity;
+      extraGems = `(+${rarity} by Rarity)`;
+    } else extraGems = "(x2 by Rarity)";
   }
 
-  return { coin: baseCoin, gem: baseGem };
+  return { coin: baseCoin, gem: baseGem, extraCoins, extraGems };
 }
 
 export default calculateSellReward;

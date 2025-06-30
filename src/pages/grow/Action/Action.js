@@ -2,10 +2,12 @@ import { useCallback } from "react";
 import { useStoreGarden, useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
 import { faHeart, faHeartCrack } from "@fortawesome/free-solid-svg-icons";
+import { useSnackbar } from "notistack";
 import ActBtn from "./ActBtn";
 import styles from "./Action.module.scss";
 
 const Action = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { resetCrop, sellCrop, toggleFavorite } = useStoreGrow(
     useShallow((state) => ({ resetCrop: state.resetCrop, sellCrop: state.sellCrop, toggleFavorite: state.toggleFavorite }))
   );
@@ -20,15 +22,27 @@ const Action = () => {
       favorite: state.favorite,
     }))
   );
-  const addPlant = useStoreGarden((state) => state.addPlant);
+  const { addPlant, usedSpots, maxSpots } = useStoreGarden(
+    useShallow((state) => ({
+      addPlant: state.addPlant,
+      usedSpots: state.usedSpots,
+      maxSpots: state.maxSpots,
+    }))
+  );
 
   const moveToGarden = useCallback(() => {
+    if (usedSpots === maxSpots) {
+      enqueueSnackbar(`Garden is full! (${usedSpots} / ${maxSpots})`, { variant: "fail" });
+      return;
+    }
     addPlant(plant);
     resetCrop();
   }, [plant]);
 
   const sellTheCrop = useCallback(() => {
-    sellCrop();
+    const { coin, gem, extraCoins, extraGems } = sellCrop();
+    enqueueSnackbar(`Collect ${coin} Coin!${extraCoins && ` ${extraCoins}`}`, { variant: "coin" });
+    if (gem > 0) enqueueSnackbar(`Collect ${gem} Gem!${extraGems && ` ${extraGems}`}`, { variant: "gem" });
   }, []);
 
   const changeFavorite = useCallback(() => {

@@ -11,9 +11,11 @@ const initialState = {
   variant: null,
   rarity: null,
   time: null,
+  update: null,
   favorite: false,
   isFertilized: false,
   isLuckyClover: false,
+  preGraft: false,
 };
 
 // Sprout will have no rarity (0), after reaching tree stage, it will have rarity from 1 to 4
@@ -50,47 +52,53 @@ const useStoreGrow = create(
           id: getCurrentUnixTime(),
           variant: randomInRange(1, maxSproutVariantbyLevels[0]),
         })),
-      choosePlant: (payload) => set((state) => ({ ...state, ...payload })),
+      choosePlant: (plant) => set((state) => ({ ...state, ...plant })),
       toggleFavorite: () => set((state) => ({ ...state, favorite: !state.favorite })),
       resetCrop: () => set(() => initialState),
-      sellCrop: () =>
+      sellCrop: () => {
+        let result;
         set((state) => {
           const { stage, level, rarity } = state;
           const { addCoin, addGem } = useStoreShop.getState();
-          const { coin, gem } = calculateSellReward(stage, level, rarity);
+          result = calculateSellReward(stage, level, rarity);
+          const { coin, gem } = result;
           addCoin(coin);
           addGem(gem);
           return initialState;
-        }),
-
+        });
+        return result;
+      },
       // Growing actions
       tickTime: () => set((state) => ({ ...state, time: state.time + 1 })),
       updateTime: (time) => set((state) => ({ ...state, time })),
       growUp: () =>
         set((state) => {
-          const { stage, level, isFertilized, isLuckyClover } = state;
+          const { stage, level, rarity, isFertilized, isLuckyClover, preGraft } = state;
           // Check if not plant is growing
           if (!stage || !level) return state;
 
           // Roll possibility for growing up chance
-          // if (!probability(isFertilized ? growUpChanceFertilized : growUpChance)) return state;
+          if (!probability(isFertilized ? growUpChanceFertilized : growUpChance)) return state;
 
-          // Handle change sprout to tree case (add rarity, change stage & reset level)
+          // Handle change SPROUT to TREE case (add rarity, change stage & reset level)
           if (stage === "sprout" && state.level === 1) {
-            const treeRarity = rollRarity(isLuckyClover ? posibilityByRaritiesWithClover : posibilityByRarities);
+            const treeRarity =
+              preGraft?.rarity || rollRarity(isLuckyClover ? posibilityByRaritiesWithClover : posibilityByRarities);
+
+            const treeVariant = preGraft?.variant || randomInRange(1, maxTreeVariantByRarities[treeRarity - 1]);
 
             return {
               ...state,
               stage: "tree",
               rarity: treeRarity,
-              variant: randomInRange(1, maxTreeVariantByRarities[treeRarity - 1]),
+              variant: treeVariant,
               level: 1,
               isLuckyClover: false,
             };
           }
 
           // Handle max level tree upto 50 levels
-          if (stage === "tree" && level === 1) return { ...state, level: 1 };
+          if (stage === "tree" && level === rarity * 10) return { ...state };
 
           // Handle grow up level case (both sprout and tree) - Only sprout change variant on level up
           return {

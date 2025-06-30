@@ -3,6 +3,8 @@ import { useStoreGrow } from "store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./GrowArea.module.scss";
 
+const shifts = { sprout: -80, tree: -110 };
+
 const GrowArea = () => {
   const { stage, level, variant, rarity } = useStoreGrow(
     useShallow((state) => ({
@@ -15,7 +17,7 @@ const GrowArea = () => {
 
   return (
     <div className={styles.wrapper}>
-      <SproutTree stage={stage} level={level} rarity={rarity} variant={variant} />
+      <SproutTree stage={stage} level={level} rarity={rarity} variant={variant} shift={shifts[stage]} />
     </div>
   );
 };

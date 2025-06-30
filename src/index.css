@@ -28,6 +28,8 @@ body {
   --unfavorite: #9b7b7b;
   --favorite-bg: #fde8ee;
 
+  --text-fail: #d30127;
+
   /* Outlet & Global layout */
   --app-round-btn-size: 70px;
   --abs-position: 25px;
@@ -42,10 +44,11 @@ body {
   --sprout: #D99A00;
   --sprout-bg: #FFF6D6;
 
-  --tree-bg: #ECFAE5;
-  --tree-r1: #87b185;
-  --tree-r2: #8EBE8A;
-  --tree-r3: #6EBB6E;
-  --tree-r4: #4AA04F;
-  --tree-r5: #248F3D;
+  --tree-bg: #f0f9f0;
+  --tree-hl: #347433;
+  --tree-r1: #a3c8a2;
+  --tree-r2: #88b88b;
+  --tree-r3: #6da96f;
+  --tree-r4: #4b944f;
+  --tree-r5: #2e7f3a;
 }

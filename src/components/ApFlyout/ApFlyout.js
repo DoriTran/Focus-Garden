@@ -50,7 +50,6 @@ const ApFlyout = ({
           anchorEl={anchorEl}
           open={noUnmountWhenClose || isOpen}
           onClose={handleClose}
-          TransitionComponent={Fade}
           anchorOrigin={anchorOrigin}
           transformOrigin={transformOrigin}
           sx={{ ...(noUnmountWhenClose && !isOpen && { display: "none" }), ...sx }}

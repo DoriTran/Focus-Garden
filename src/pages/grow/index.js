@@ -1,5 +1,7 @@
 import { ApScrollbar } from "components";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useStoreGrow } from "store";
+import { useShallow } from "zustand/react/shallow";
 import Ground from "./Ground/Ground";
 import GrowArea from "./GrowArea/GrowArea";
 import Timer from "./Timer/Timer";
@@ -9,14 +11,17 @@ import Items from "./Items/Items";
 
 const GrowPage = () => {
   const scrollRef = useRef(null);
+  const { stage, level } = useStoreGrow(useShallow((state) => ({ stage: state.stage, level: state.level })));
+
   useEffect(() => {
+    if (stage === "sprout") return;
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
-        behavior: "smooth",
+        behavior: "auto",
       });
     }
-  }, []);
+  }, [stage, level]);
 
   return (
     <ApScrollbar hidden ref={scrollRef}>

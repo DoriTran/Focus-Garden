@@ -6,7 +6,7 @@ import styles from "./SproutTree.module.scss";
 // level = 1-8
 // variant = number
 
-const SproutTree = ({ stage, level, variant, rarity }) => {
+const SproutTree = ({ scale = 1, shift = 0, stage, level, variant, rarity }) => {
   const styleData = useMemo(() => {
     // For empty slot
     if (!stage) return {};
@@ -21,6 +21,15 @@ const SproutTree = ({ stage, level, variant, rarity }) => {
     };
   }, [stage, level, variant]);
 
+  const customStyleData = useMemo(() => {
+    const stylesData = {
+      width: Math.floor(styleData.width * scale),
+      height: Math.floor(styleData.height * scale),
+      ...(shift && { marginBottom: shift }),
+    };
+    return stylesData;
+  }, [styleData, scale, shift]);
+
   const pathToSprite = useMemo(() => {
     // For sprout stage and variants
     if (stage === "sprout") return `/sprites/sprout/stage ${level}/${variant}.png`;
@@ -30,7 +39,7 @@ const SproutTree = ({ stage, level, variant, rarity }) => {
   }, [stage, level, variant]);
 
   return (
-    <div className={styles.wrapper} style={{ ...styleData }}>
+    <div className={styles.wrapper} style={customStyleData}>
       <div style={{ backgroundImage: `url("${pathToSprite}")` }} className={styles.sproutTree} />
     </div>
   );

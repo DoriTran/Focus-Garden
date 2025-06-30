@@ -1,10 +1,11 @@
 import { useStoreGarden } from "store";
 import { useShallow } from "zustand/react/shallow";
 import { useMemo } from "react";
-import styles from "./GardenPlants.module.scss";
 import Plant from "./Plant/Plant";
+import Background from "./Background/Background";
+import styles from "./GardenPlants.module.scss";
 
-const category = [5, 4, 3, 2, 1, "sprout"];
+const category = [5, 4, 3, 2, 1, "sprouts"];
 
 const GardenPlants = () => {
   const { favorites, gardens, filter } = useStoreGarden(
@@ -21,9 +22,12 @@ const GardenPlants = () => {
 
   return (
     <div className={styles.container}>
-      {category.map((cate) => shouldShow[cate] && favorites[cate]?.map((plant) => <Plant key={plant.id} plant={plant} />))}
-      {!filter.favorites &&
-        category.map((cate) => shouldShow[cate] && gardens[cate]?.map((plant) => <Plant key={plant.id} plant={plant} />))}
+      <Background />
+      <div className={styles.plants}>
+        {category.map((cate) => shouldShow[cate] && favorites[cate]?.map((plant) => <Plant key={plant.id} plant={plant} />))}
+        {!filter.favorite &&
+          category.map((cate) => shouldShow[cate] && gardens[cate]?.map((plant) => <Plant key={plant.id} plant={plant} />))}
+      </div>
     </div>
   );
 };
