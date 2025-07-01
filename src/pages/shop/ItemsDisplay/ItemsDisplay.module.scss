@@ -1,0 +1,17 @@
+$selected-size: 60vh;
+$side-size: 30vh;
+$out-size: 10vh;
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+  align-items: center;
+  gap: 5vw;
+  padding-left: calc(50vw - $selected-size / 2);
+  padding-right: calc(50vw - $selected-size / 2);
+  scroll-padding-left: calc(50vw - $selected-size / 2);
+  scroll-padding-right: calc(50vw - $selected-size / 2);
+  position: relative;
+  z-index: 5;
+}

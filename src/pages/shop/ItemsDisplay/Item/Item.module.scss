@@ -1,0 +1,72 @@
+$selected-size: 60vh;
+$side-size: 45vh;
+$out-size: 30vh;
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: $selected-size;
+  min-height: $selected-size;
+  scroll-snap-align: center;
+  transition: all 0.5s ease-in-out;
+
+  .bubble {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    opacity: 0.45;
+    width: $selected-size;
+    height: $selected-size;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .item {
+    width: calc($selected-size * 75 / 100);
+    height: calc($selected-size * 75 / 100);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: relative;
+    z-index: 2;
+    opacity: 0.95;
+    transition: all 0.35s ease-in-out;
+  }
+}
+
+.sideContainer {
+  margin-top: 10vh;
+
+  .bubble {
+    width: $side-size !important;
+    height: $side-size !important;
+    opacity: 0.25;
+  }
+
+  .item {
+    width: calc($side-size * 75 / 100) !important;
+    height: calc($side-size * 75 / 100) !important;
+    opacity: 0.6;
+  }
+}
+
+.outBoundContainer {
+  margin-top: 25vh;
+
+  .bubble {
+    width: $out-size !important;
+    height: $out-size !important;
+    opacity: 0.1;
+  }
+
+  .item {
+    width: calc($out-size * 75 / 100) !important;
+    height: calc($out-size * 75 / 100) !important;
+    opacity: 0.3;
+  }
+}

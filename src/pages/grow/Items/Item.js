@@ -9,7 +9,7 @@ const Item = ({ item, total, used, onClick }) => {
     <div className={clsx(styles.itemWrapper, { [styles.itemWrapperUnactive]: !total || (stage && !used) })}>
       <div className={styles.total}>{total}</div>
       <div className={clsx(styles.item, { [styles.itemUsed]: used })} onClick={onClick}>
-        <div style={{ backgroundImage: `url("/sprites/shop/${item}.png")` }} className={styles.itemImg} />
+        <div style={{ backgroundImage: `url("/sprites/shop/items/${item}.png")` }} className={styles.itemImg} />
       </div>
     </div>
   );

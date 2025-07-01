@@ -61,7 +61,7 @@ const useStoreGarden = create(
       buyGardenSpot: () =>
         set((state) => {
           const { coin, gem, addCoin, addGem } = useStoreShop.getState();
-          const { coinst: neededCoin, gem: neededGem } = getCostForNewSpot();
+          const { coin: neededCoin, gem: neededGem } = getCostForNewSpot();
 
           if (coin < neededCoin || gem < neededGem) return state;
           addCoin(-neededCoin);

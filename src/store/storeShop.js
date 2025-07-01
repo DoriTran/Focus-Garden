@@ -4,9 +4,10 @@ import { persist } from "zustand/middleware";
 const useStoreShop = create(
   persist(
     (set) => ({
+      /* ==> SHOP STATE */
       // Currency
-      coin: 0,
-      gem: 0,
+      coin: 10000,
+      gem: 1000,
       // Inventory items
       fertilizer: 0,
       luckyClover: 0,
@@ -16,7 +17,18 @@ const useStoreShop = create(
       // Shop actions
       addCoin: (amount) => set((state) => ({ ...state, coin: state.coin + amount })),
       addGem: (amount) => set((state) => ({ ...state, gem: state.gem + amount })),
+      buyItem: (item, price) =>
+        set((state) => ({
+          ...state,
+          [item]: state[item] + 1,
+          ...(price.coin > 0 && { coin: state.coin - price.coin }),
+          ...(price.gem > 0 && { gem: state.gem - price.gem }),
+        })),
       adjustItem: (item, amount) => set((state) => ({ ...state, [item]: state[item] + amount })),
+
+      /* ==> LOGIC STATE */
+      selectedItemIndex: 0,
+      setSelectedItemIndex: (id) => set((state) => ({ ...state, selectedItemIndex: id })),
     }),
     {
       name: "Shop",

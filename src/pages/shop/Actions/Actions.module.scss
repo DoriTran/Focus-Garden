@@ -1,0 +1,156 @@
+.container {
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  height: 250px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+
+  user-select: none;
+
+  .arrowWrapper {
+    min-width: 225px;
+    min-height: 225px;
+    display: flex;
+    align-items: flex-end;
+
+    .arrowBtn {
+      width: 200px;
+      height: 200px;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      border-radius: 25px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        width: 225px;
+        height: 225px;
+      }
+    }
+
+    .arrowBtnOut {
+      width: 200px !important;
+      height: 200px !important;
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  .left {
+    justify-content: flex-end;
+  }
+
+  .right {
+    justify-content: flex-start;
+  }
+
+  .wrapper {
+    min-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .buyBtn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 65px;
+      min-width: 150px;
+      color: #4b2e00;
+      background: #fbe5a3; /* warm cream */
+      border: 4px solid #a56a2d; /* wood-like border */
+      border-radius: 15px;
+      padding: 6px 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+
+      .text {
+        font-size: 30px;
+        line-height: 20px;
+        font-weight: bold;
+      }
+
+      .owned {
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: -5px;
+      }
+    }
+
+    .buyBtnNotEnoughMoney {
+      filter: brightness(0.95);
+      cursor: not-allowed !important;
+
+      .text {
+        color: var(--text-fail);
+        text-decoration: line-through;
+      }
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+
+      .name {
+        font-size: 50px;
+        width: 100%;
+        text-align: center;
+        color: var(--text);
+        text-shadow: -1px -1px 0 var(--favorite-bg), 1px -1px 0 var(--favorite-bg), -1px 1px 0 var(--favorite-bg),
+          1px 1px 0 var(--favorite-bg);
+      }
+
+      .price {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+        font-size: 48px;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          var(--text-background) 35%,
+          var(--text-background) 65%,
+          transparent 100%
+        );
+
+        .coin {
+          color: var(--coin);
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 3px;
+        }
+
+        .gem {
+          color: var(--gem);
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 3px;
+        }
+      }
+    }
+  }
+}
+
+.currencyImg {
+  width: 45px;
+  height: 45px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
